@@ -66,6 +66,14 @@ Si domináis los tres primeros puntos vais sobrado; el resto se afina en la prim
 Note:
 Esta diapositiva es el concepto que sostiene la unidad entera: HTML declara significado y nada más. Si escribís etiquetas pensando en el tamaño de la fuente, estáis mezclando capas y os será imposible reutilizar el contenido. Preguntad siempre: ¿esto dice qué es o dice cómo se ve? La respuesta ya os dice en qué fichero va.
 
+--
+
+## HTML en el stack: estructura, no apariencia
+<div class="fragment">
+<img src="./img/01/html-css-js.jpg" alt="TUI" style="max-width: 100%; max-height: 11em; object-fit: contain; border-radius: 8px;">
+</div>
+
+
 ---
 
 ## Del SGML a HTML5
