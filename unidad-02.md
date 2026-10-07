@@ -159,6 +159,25 @@ La tentación de usar `<br>` para «bajar una línea» es el error de maquetaci�
 Note:
 La pregunta de partida es siempre la misma: ¿el orden importa? Si la respuesta es sí, es `ol`; si no, es `ul`. Con `start="4" y reversed` la lista arrancaría en 4 y terminaría en 2. Los menús de navegación son listas de enlaces, no tablas: `<nav> + <ul> + <li> + <a>`.
 
+--
+
+## Listas: ul, ol y dl
+
+<span class="fragment"><code>&lt;dl&gt;</code> "definition list": <code>&lt;dt&gt;</code> "definition term" <code>&lt;dd&gt;</code> "description details"</span>
+
+```html
+  <p>Cryptids of Cornwall:</p>
+  <dl>
+    <dt>Beast of Bodmin</dt>
+    <dd>A large feline inhabiting Bodmin Moor.</dd>
+
+    <dt>Morgawr</dt>
+    <dd>A sea serpent.</dd>
+
+    <dt>Owlman</dt>
+    <dd>A giant owl-like creature.</dd>
+</dl>
+```
 ---
 
 ## strong, em y mark: significado, no apariencia

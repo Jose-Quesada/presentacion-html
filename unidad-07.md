@@ -46,6 +46,21 @@ Cuatro objetivos; el tercero es el práctico clave: vais a levantar una página 
 Note:
 La organización de una página tiene tres destinatarios distintos. Si esa estructura solo existe en clases CSS, el buscador, el lector de pantalla y el mantenimiento la ignoran por completo. La semántica no es estética: es significado que viaja gratis en el marcado.
 
+--
+
+## Marco legal de accesibilidad
+
+<span class="fragment">Obligación legal: <mark>Real Decreto 1112/2018</mark> (sitios web y apps móviles del sector público)</span>
+
+<span class="fragment">Norma técnica de referencia: <mark>UNE-EN 301549</mark> (armonizada en la Unión Europea)</span>
+
+<span class="fragment">Nivel de conformidad exigido: <mark>WCAG 2.1 / 2.2 Nivel AA</mark></span>
+
+<span class="fragment">La semántica nativa (HTML5) es la <mark>primera línea de cumplimiento</mark></span>
+
+Note:
+El Real Decreto 1112/2018 traspone la Directiva (UE) 2016/2102 y obliga a garantizar la accesibilidad según la norma UNE-EN 301549, basada en las WCAG nivel AA. Escribir marcado semántico nativo (landmarks, headings, labels) resuelve directamente decenas de criterios de éxito obligatorios por ley.
+
 ---
 
 ## Ejemplo: de la divitis a la semántica

@@ -93,6 +93,24 @@ graph LR
 Note:
 De SGML heredamos las etiquetas de apertura y cierre; de la separación de HTML 4.01, el anidamiento estricto. XHTML intentó ser XML puro y fracasó porque la web real no era tan limpia; de ahí que el WHATWG asumiera el mantenimiento. Fijaos en el detalle: `<!DOCTYPE html>` no es una etiqueta, es una declaración; no cierra nada.
 
+--
+
+## HTML vs XHTML: Parsers y reglas
+
+| Característica | HTML5 | XHTML 1.0 / 1.1 |
+|---|---|---|
+| **Sintaxis base** | HTML Living Standard (flexible) | XML estricto (W3C) |
+| **Tipo MIME** | `text/html` | `application/xhtml+xml` |
+| **Tratamiento errores** | Recuperación determinista de errores | Error fatal (*Yellow Screen of Death*) |
+| **Reglas clave** | Cierre implícito tolerado | Cierre obligatorio (`<br />`), minúsculas y comillas |
+
+<span class="fragment"><strong>Bien formado</strong>: cumple la sintaxis XML · <strong>Válido</strong>: cumple además su DTD o esquema</span>
+
+<span class="fragment">En HTML5 moderno prima la <mark>robustez y el parser estándar</mark> sobre la rigidez de XML</span>
+
+Note:
+Concepto clave curricular: la diferencia entre documento bien formado (well-formed: sintaxis correcta, etiquetas anidadas y cerradas, atributos entrecomillados) y documento válido (valid: respeta la DTD/esquema). XHTML utilizaba parsers XML estrictos que bloqueaban la renderización ante el más mínimo error. HTML5 definió un algoritmo de parseo determinista que normaliza cualquier error en el DOM.
+
 ---
 
 ## Qué aporta HTML5
@@ -153,6 +171,41 @@ Este es el error conceptual más extendido fuera del aula y se pregunta en casi 
 
 Note:
 Este esqueleto se memoriza y se usa en todos los ejercicios: diez líneas que resuelven el 80 % de los problemas del primer día. `charset` debe aparecer dentro de los primeros 1024 bytes y `viewport` es obligatorio en responsivo, o los móviles renderizarán a 980 px. Fijaos en que el body solo contiene contenido visible: los metadatos no van ahí.
+
+--
+
+## Metadatos y enlaces avanzados en &lt;head&gt;
+
+```html
+<!-- Resource Hints: acelerar la carga de recursos clave -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+
+<!-- PWA y visualización en dispositivos -->
+<meta name="theme-color" content="#1e40af">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon-192.png">
+
+<!-- Sindicación de contenidos (RSS / Atom) -->
+<link rel="alternate" type="application/rss+xml" title="Feed RSS" href="/rss.xml">
+
+<!-- Datos estructurados (SEO Semántico con Schema.org) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Lenguajes de Marcas",
+  "description": "Módulo formativo 0373 (DAW/DAM)"
+}
+</script>
+```
+
+<span class="fragment">Resource Hints (<mark>preload, preconnect</mark>) optimizan el rendimiento de carga</span>
+
+<span class="fragment">JSON-LD proporciona datos semánticos que procesan los motores de búsqueda</span>
+
+Note:
+En el head moderno no solo van títulos y estilos. Resource Hints como preload priorizan fuentes o imágenes críticas; theme-color y manifest.json configuran la experiencia PWA e interfaz en navegadores móviles; y JSON-LD (Schema.org) aporta datos estructurados de alta relevancia SEO. La sindicación RSS permite a agregadores suscribirse automáticamente mediante el link rel="alternate".
 
 ---
 

@@ -259,6 +259,62 @@ El arrastre nativo es engañosamente sencillo: la parte difícil es recordar que
 
 ---
 
+## Elementos interactivos nativos: &lt;dialog&gt;
+
+```html
+<dialog id="miModal">
+  <form method="dialog">
+    <h2>Confirmar acción</h2>
+    <p>¿Deseas guardar los cambios?</p>
+    <button value="cancel">Cancelar</button>
+    <button value="confirm" autofocus>Confirmar</button>
+  </form>
+</dialog>
+<button onclick="document.getElementById('miModal').showModal()">Abrir Modal</button>
+```
+
+<span class="fragment"><code>showModal()</code> abre en la <mark>Top Layer</mark> con trampa de foco y <code>::backdrop</code></span>
+
+<span class="fragment"><code>show()</code> abre como popup no modal sin bloquear el resto de la página</span>
+
+<span class="fragment"><code>&lt;form method="dialog"&gt;</code> cierra el modal <mark>sin JavaScript</mark> y pasa <code>returnValue</code></span>
+
+Note:
+El elemento dialog nativo sustituye librerías enteras de modales y popups. Gestiona automáticamente la trampa de foco, el cierre con tecla Escape, el pseudo-elemento ::backdrop en la capa superior (Top Layer) y el retorno de valor con formularios nativos method="dialog".
+
+--
+
+## Acordeones y plantillas: &lt;details&gt; y &lt;template&gt;
+
+```html
+<!-- Acordeón exclusivo nativo con atributo name -->
+<details name="faq" open>
+  <summary>¿Qué requisitos tiene el curso?</summary>
+  <p>Conocimientos básicos de informática y muchas ganas de programar.</p>
+</details>
+<details name="faq">
+  <summary>¿Cómo se evalúa?</summary>
+  <p>Mediante proyectos prácticos y pruebas objetivas.</p>
+</details>
+
+<!-- Plantilla inerte: no se procesa hasta clonarse -->
+<template id="tarjeta-alumno">
+  <div class="card">
+    <h3 class="nombre"></h3>
+    <p class="ciclo"></p>
+  </div>
+</template>
+```
+
+<span class="fragment"><code>&lt;details&gt;</code> / <code>&lt;summary&gt;</code>: colapso/expansión sin JS; con <mark>name="..."</mark> forman acordeones exclusivos</span>
+
+<span class="fragment"><code>&lt;template&gt;</code>: marcado <mark>inerte</mark> clonable con <code>cloneNode(true)</code>, base de Web Components</span>
+
+Note:
+El elemento details crea interfaces plegables nativas y accesibles. Con el atributo name moderno, varios details comparten grupo y solo uno permanece abierto al mismo tiempo. El elemento template almacena HTML inerte que no ejecuta scripts ni descarga imágenes hasta ser clonado por JavaScript en el DOM.
+
+---
+
 ## Canvas y SVG
 
 <span class="fragment"><code>canvas</code> es un <mark>bitmap</mark>: píxeles que se pixelan al escalar con CSS</span>

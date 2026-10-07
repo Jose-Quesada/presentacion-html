@@ -69,23 +69,40 @@ Tabla de cabecera del curso y también de examen: HTML no programa, solo declara
 
 ---
 
-## Los tres módulos
+## Los tres módulos y marco normativo
 
 <div style="font-size: 1em; text-align: left;">
 
-Este material alimenta tres módulos de dos ciclos:
+Este material alimenta tres módulos de dos ciclos formativos (FP Grado Superior):
 </div>
 
-<span class="fragment"><strong>0373 · LMH</strong> — Lenguajes de marcas (DAW)</span>
+<span class="fragment"><strong>0373 · LMH</strong> — Lenguajes de marcas y SGI (DAW 1.º)</span>
 
-<span class="fragment"><strong>0615 · DIW</strong> — Diseño de interfaces web (DAW)</span>
+<span class="fragment"><strong>0615 · DIW</strong> — Diseño de interfaces web (DAW 2.º)</span>
 
-<span class="fragment"><strong>0488 · DI</strong> — Desarrollo de interfaces (DAM)</span>
+<span class="fragment"><strong>0488 · DI</strong> — Desarrollo de interfaces (DAM 2.º)</span>
 
-<span class="fragment">Mismo contenido, distinto énfasis: HTML, CSS, frameworks</span>
+<span class="fragment">Mismo contenido, distinto énfasis: HTML, CSS, frameworks y accesibilidad</span>
 
 Note:
-Los tres módulos comparten material porque comparten tecnología: primero se aprende a escribir el contenido y después a vestirlo y a llevarlo a un framework. En DAW tenéis 0373 y 0615 en paralelo; en DAM, 0488 recoge lo esencial de ambos antes de aterrizar en Angular. Pregunta: ¿alguien sabe ya en qué módulo le tocará evaluar cada una de estas unidades? Vale la pena aclararlo hoy para saber qué os van a preguntar y cuándo.
+Los tres módulos comparten material porque comparten tecnología: primero se aprende a escribir el contenido y después a vestirlo y a llevarlo a un framework. En DAW tenéis 0373 y 0615; en DAM, 0488 recoge lo esencial de ambos antes de aterrizar en componentes. Pregunta: ¿alguien sabe ya en qué módulo le tocará evaluar cada una de estas unidades? Vale la pena aclararlo hoy para saber qué os van a preguntar y cuándo.
+
+--
+
+## Marco normativo en Andalucía
+
+| Ámbito | DAW (Web) | DAM (Multiplataforma) |
+|---|---|---|
+| **Real Decreto (BOE)** | RD 686/2010 | RD 453/2010 |
+| **Orden (BOJA)** | Orden 16/06/2011 (BOJA 149) | Orden 16/06/2011 (BOJA 150) |
+| **Módulos clave** | 0373 (LMH) · 0615 (DIW) | 0488 (DI) |
+
+<span class="fragment">Nuevo marco FP: <mark>Ley Orgánica 3/2022</mark> y <mark>Real Decreto 659/2023</mark></span>
+
+<span class="fragment">Accesibilidad legal obligatoria: <mark>Real Decreto 1112/2018</mark> (UNE-EN 301549 / WCAG AA)</span>
+
+Note:
+Marco normativo que fundamenta la programación didáctica: RD 686/2010 y Orden 16/06/2011 (BOJA 149) para DAW; RD 453/2010 y Orden 16/06/2011 (BOJA 150) para DAM. Ambos bajo la Ley Orgánica 3/2022 y RD 659/2023. Además, el RD 1112/2018 exige accesibilidad obligatoria según la norma UNE-EN 301549 y los estándares WCAG en el desarrollo web y de aplicaciones.
 
 ---
 
