@@ -195,6 +195,27 @@ La pregunta de partida es siempre la misma: ¿el orden importa? Si la respuesta 
 Note:
 `strong` marca importancia objetiva (una advertencia crítica) y `em` énfasis en la pronunciación; ninguno de los dos se elige porque «se ve mejor». Si solo queréis apariencia, usad un span con clase y estiladlo con CSS. La fecha correcta es `<time datetime="2026-06-15">15 de junio</time>`, legible para las máquinas.
 
+--
+
+## Semántica en línea: time, del/ins y citas
+
+<span class="fragment"><code>&lt;time datetime="2026-10-08T18:00"&gt;</code>: máquina lee fecha exacta en <strong>ISO 8601</strong></span>
+
+<span class="fragment"><code>&lt;del&gt;</code> (texto eliminado/precio tachado) vs <code>&lt;ins&gt;</code> (texto añadido/precio oferta)</span>
+
+<span class="fragment"><code>&lt;q&gt;</code>: cita breve en línea (el navegador añade comillas automáticas según el <code>lang</code>)</span>
+
+<span class="fragment"><code>&lt;blockquote&gt;</code>: cita extensa en bloque independiente</span>
+
+<span class="fragment"><code>&lt;cite&gt;</code> (etiqueta: título de obra) vs <code>cite="..."</code> (atributo: URL fuente invisible)</span>
+
+Note:
+Detalles clave para el alumnado:
+1. time permite a navegadores y teléfonos añadir eventos al calendario directamente gracias a datetime.
+2. del e ins son esenciales en comercio electrónico (rebajas: del 50€ ins 29€) y control editorial de cambios.
+3. El atributo cite de blockquote no es clicable ni visible (es metadato para buscadores); si se quiere enlace visible, se añade dentro un enlace <a>.
+4. La etiqueta <cite> jamás debe contener el nombre de la persona autora, sino el título de la obra (libro, canción, película, especificación).
+
 ---
 
 ## Código técnico: code, pre, kbd, samp
@@ -222,7 +243,7 @@ Estos cinco elementos son el equivalente semántico de la fuente monoespaciada: 
 </address>
 
 <figure>
-    <img src="entrega.jpg" alt="Alumnado entregando los proyectos">
+    <img src="https://dummyimage.com/800x600/ccc/000.png&text=entrega.jpg" alt="Alumnado entregando los proyectos">
     <figcaption>Entrega de proyectos, junio de 2026.</figcaption>
 </figure>
 
@@ -242,27 +263,48 @@ La confusión habitual es creer que `cite` muestra la fuente: es metadata invisi
 
 ---
 
-## Ejemplo: artículo de blog semántico
+## Ejemplo práctico · Artículo editorial y jerarquía semántica
 
 ```html
 <article>
   <header>
     <h1>Cómo organizar los apuntes de DAW</h1>
-    <p>Por <cite>Ana Ruiz</cite> · <time datetime="2026-09-29">29 sep 2026</time></p>
+    <p>Por <cite>Ana Ruiz</cite> · <time datetime="2026-09-29">29 de septiembre de 2026</time></p>
   </header>
+  <p>Empezar el curso con buen método ahorra horas de repaso.</p>
   <h2>Tres claves</h2>
   <ol>
     <li>Un fichero por tema, con su <strong>encabezado</strong> propio.</li>
-    <li>Resaltar con el subrayador lo que se cae seguro.</li>
+    <li>Resaltar con <mark>marcador</mark> lo que se cae seguro.</li>
+    <li>Repasar antes de la <time datetime="2026-10-10">prueba del 10 de octubre</time>.</li>
   </ol>
-  <blockquote cite="https://www.ies.example.es/blog"><p>Repasar es aprender dos veces.</p></blockquote>
+  <blockquote cite="https://www.ies.example.es/blog">
+    <p>Repasar es aprender dos veces.</p>
+  </blockquote>
+  <h3>Plantilla mínima</h3>
+  <pre><code>&lt;h1&gt;Tema&lt;/h1&gt;
+&lt;p&gt;Ideas principales.&lt;/p&gt;</code></pre>
+  <p><small>Publicado con fines educativos; se permite su uso en clase.</small></p>
+  <footer><p>Etiquetas: <span>#html</span> <span>#fp</span></p></footer>
 </article>
 ```
 
-<span class="fragment">Todo vive dentro de un <code>&lt;article&gt;</code> autónomo, entendible sin el resto de la página</span>
+<span class="fragment">Contenedor autónomo: <code>&lt;article&gt;</code> con cabecera (<code>&lt;header&gt;</code>) y cierre (<code>&lt;footer&gt;</code>)</span>
+
+<span class="fragment">Jerarquía estricta sin saltos: <code>&lt;h1&gt;</code> &rarr; <code>&lt;h2&gt;</code> &rarr; <code>&lt;h3&gt;</code></span>
+
+<span class="fragment">Fechas estandarizadas en ISO 8601 con <code>&lt;time datetime="..."&gt;</code></span>
+
+<span class="fragment">Énfasis semántico: <code>&lt;strong&gt;</code> (importancia) vs. <code>&lt;mark&gt;</code> (resaltado contextual)</span>
 
 Note:
-Fijaos en tres cosas: la jerarquía h1 → h2 sin saltos, la fecha legible con su `datetime` y la cita con su fuente. El `<footer>` y el `<small>` del original los hemos dejado fuera por espacio, pero van dentro del artículo. Este patrón es el que se repite en cualquier blog, manual o ficha de producto.
+Disección pedagógica del artículo:
+1. <article>: entidad independiente y reutilizable (sindicable en RSS o newsletters).
+2. Jerarquía de encabezados: h1 -> h2 -> h3 sin saltos de nivel; el tamaño de letra lo define CSS, nunca la etiqueta.
+3. <time datetime="2026-09-29">: formato ISO 8601 procesable por calendarios, robots y lectores de pantalla.
+4. Diferencia semántica: <strong> comunica gravedad o importancia seria; <mark> representa un marcador fosforito contextual.
+5. <pre><code>: conserva espacios y tabulaciones para bloques de código; los caracteres < y > se escapan con &lt; y &gt;.
+6. <small> representa letra pequeña legal o editorial, no es mero formato cosmético.
 
 ---
 

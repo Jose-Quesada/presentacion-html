@@ -392,6 +392,50 @@ Ese bucle es la arquitectura de cualquier mini app con persistencia local: leer,
 
 ---
 
+## Ejemplo práctico · Mini-app con Web Storage y JSON
+
+```html
+<form id="form-nota">
+  <label for="texto-nota">Nueva nota:</label>
+  <input type="text" id="texto-nota" required maxlength="100" placeholder="Estudiar Web Storage...">
+  <button type="submit">Guardar nota</button>
+</form>
+<ul id="lista-notas" aria-live="polite"></ul>
+```
+
+```javascript
+// Lectura defensiva con parseo seguro de JSON
+function leerNotas() {
+  try {
+    return JSON.parse(localStorage.getItem('notas_daw')) || [];
+  } catch (error) {
+    console.error('Error leyendo storage:', error);
+    return [];
+  }
+}
+// Escritura serializada en cliente (~5 MB)
+function guardar(texto) {
+  const notas = leerNotas();
+  notas.push(texto);
+  localStorage.setItem('notas_daw', JSON.stringify(notas));
+}
+```
+
+<span class="fragment">Almacenamiento síncrono en cliente: pares clave/valor exclusivamente de tipo <code>String</code></span>
+
+<span class="fragment">Serialización obligatoria con <code>JSON.stringify()</code> y deserialización defensiva con <code>try/catch</code></span>
+
+<span class="fragment">Seguridad: mitigación XSS usando <code>textContent</code> al pintar en el DOM, nunca <code>innerHTML</code></span>
+
+Note:
+Patrón canónico de persistencia en frontend:
+1. Web Storage solo admite texto: si guardas un objeto o array directamente, se convierte en la cadena '[object Object]', corrompiendo la base de datos local.
+2. try/catch defensivo: previene que la aplicación crashee si un usuario edita manualmente la clave en DevTools con sintaxis JSON inválida.
+3. aria-live="polite" en la lista comunica automáticamente a lectores de pantalla cuando se agrega una nueva nota sin interrumpir el flujo.
+4. Regla de seguridad vital: jamás almacenar contraseñas, tokens JWT o datos confidenciales en localStorage, ya que cualquier script XSS puede leerlo con total libertad.
+
+---
+
 ## Error común: los fallos que más se corrigen
 
 <span class="fragment">Guardar un objeto <mark>sin JSON.stringify</mark>: sale [object Object]</span>

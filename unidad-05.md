@@ -294,6 +294,57 @@ El árbol resume la jerarquía completa: table es el contenedor, caption el nomb
 
 ---
 
+## Ejemplo práctico · Acta de notas con tfoot y accesibilidad
+
+```html
+<table>
+  <caption>Notas de evaluación — 1.º DAW A, 1.er trimestre</caption>
+  <thead>
+    <tr>
+      <th scope="col">Módulo</th>
+      <th scope="col">1.ª eval.</th>
+      <th scope="col">2.ª eval.</th>
+      <th scope="col">Proyecto</th>
+      <th scope="col" abbr="Final">Nota final</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Lenguajes de marcas</th>
+      <td>7,0</td><td>8,5</td><td>9,0</td><td>8,4</td>
+    </tr>
+    <tr>
+      <th scope="row">Bases de datos</th>
+      <td>5,5</td><td>6,5</td><td>7,5</td><td>6,7</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th scope="row">Media del grupo</th>
+      <td>6,3</td><td>7,3</td><td>8,2</td><td>7,5</td>
+    </tr>
+  </tfoot>
+</table>
+```
+
+<span class="fragment"><code>&lt;caption&gt;</code> imprescindible: título accesible anunciado al entrar en la tabla</span>
+
+<span class="fragment"><code>scope="col"</code> y <code>scope="row"</code> enlazan bidireccionalmente cada dato con su cabecera</span>
+
+<span class="fragment"><code>abbr="Final"</code> abrevia la lectura para evitar fatiga en sintetizadores de voz</span>
+
+<span class="fragment"><code>&lt;tfoot&gt;</code> al cierre semántico para resumir totales y estadísticas de grupo</span>
+
+Note:
+Este ejemplo integra las exigencias del criterio WCAG 1.3.1 (Información y relaciones):
+1. caption actúa como la etiqueta obligatoria para la tabla.
+2. thead, tbody y tfoot agrupan las tres secciones funcionales del documento.
+3. El atributo scope en los th comunica inequívocamente al lector de pantalla si el encabezado rige una columna entera o una fila concreta.
+4. abbr="Final" proporciona una forma corta para que el lector no tenga que repetir la frase entera "Nota final" celda por celda.
+5. Recordad a los alumnos que las tablas son exclusivamente para datos estructurados, nunca para maquetar rejillas o tarjetas visuales.
+
+---
+
 ## Error común: los tres que más se corrigen
 
 - ⚠ Escribir la fila inferior <mark>completa</mark>: se desplazan las columnas

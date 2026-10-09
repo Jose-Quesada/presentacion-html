@@ -245,6 +245,25 @@ La especificación lo dice literalmente: no uses ARIA si existe un elemento HTML
 Note:
 La diferencia entre nombre y descripción es el error de examen más frecuente de la unidad. El nombre identifica el control al enfocarlo y la descripción añade ayuda o instrucción después. Repetir el texto visible en aria-label provoca un doble anuncio molesto.
 
+--
+
+## Jerarquía de cálculo del Nombre Accesible
+
+<span class="fragment">1. <code>aria-labelledby="id"</code>: <strong>gana siempre</strong>; toma el texto de otro elemento de la pantalla</span>
+
+<span class="fragment">2. <code>aria-label="texto"</code>: usado para dar nombre a botones con solo icono (lupa de búsqueda, aspa de cerrar)</span>
+
+<span class="fragment">3. <strong>Texto nativo visible:</strong> el texto dentro de <code>&lt;button&gt;Guardar&lt;/button&gt;</code> o <code>&lt;label&gt;</code></span>
+
+<span class="fragment">4. <code>title="..."</code>: el último recurso (solo si no hay nada de lo anterior)</span>
+
+<span class="fragment"><code>aria-describedby="id"</code>: <strong>no nombra</strong>, añade información secundaria (ayudas o errores)</span>
+
+Note:
+Explicación para el aula:
+1. Si un botón dice "Guardar" y le pones aria-label="Enviar formulario", el lector de pantalla dirá "Enviar formulario" e ignorará "Guardar". Nunca pongas aria-label si el texto visible ya es claro.
+2. aria-describedby es para asociar mensajes de error: <input id="email" aria-describedby="error-email"> <span id="error-email">Formato inválido</span>. El lector anuncia el campo y después lee el error.
+
 ---
 
 ## Estado: aria-expanded, aria-hidden, aria-current
@@ -338,6 +357,67 @@ graph TB
 
 Note:
 El orden visual no es el orden semántico: main y aside comparten fila en CSS pero son hermanos en el DOM. Recorrer la página con los atajos de landmark y con la tecla de encabezados es la prueba rápida de que la estructura es correcta. NVDA en Windows y VoiceOver en macOS bastan para la práctica.
+
+---
+
+## Ejemplo práctico · Esqueleto estructural y landmarks ARIA
+
+```html
+<body>
+  <!-- 1. Enlace de salto: primer elemento del DOM (WCAG 2.4.1) -->
+  <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+
+  <!-- 2. Landmark "banner" (header hijo directo de body) -->
+  <header class="cabecera">
+    <h1 class="logo"><a href="/">El Cuaderno de Apuntes</a></h1>
+    <nav aria-label="Principal">
+      <ul>
+        <li><a href="/" aria-current="page">Inicio</a></li>
+        <li><a href="/temas">Temas</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="rejilla">
+    <!-- 3. Landmark "main" único con recepción de foco -->
+    <main id="contenido" tabindex="-1">
+      <article>
+        <header>
+          <h2>Por qué escribimos HTML semántico</h2>
+          <p><time datetime="2026-09-29">29 sep 2026</time> — Marta Ruiz</p>
+        </header>
+        <section aria-labelledby="ejemplos">
+          <h3 id="ejemplos">Ejemplos de etiquetas</h3>
+          <p>header, nav, main, article...</p>
+        </section>
+        <footer><p>Etiquetas: <a href="/temas/html">HTML</a></p></footer>
+      </article>
+    </main>
+
+    <!-- 4. Landmark "complementary" -->
+    <aside class="barra-lateral">
+      <h2>Entradas relacionadas</h2>
+    </aside>
+  </div>
+
+  <!-- 5. Landmark "contentinfo" (footer hijo directo de body) -->
+  <footer class="pie"><p>&copy; 2026 El Cuaderno</p></footer>
+</body>
+```
+
+<span class="fragment">Skip link accesible: primer hijo de <code>&lt;body&gt;</code> que salta al <code>#contenido</code></span>
+
+<span class="fragment"><code>tabindex="-1"</code> en <code>&lt;main&gt;</code> permite recibir foco programático sin romper Tab</span>
+
+<span class="fragment">Landmarks mapeados: <code>banner</code>, <code>navigation</code>, <code>main</code>, <code>complementary</code> y <code>contentinfo</code></span>
+
+Note:
+Arquitectura y navegación accesible:
+1. Skip link: primer elemento enfocable del DOM. Oculto visualmente, aparece al pulsar Tab y lleva el foco directamente al main con Enter (Criterio WCAG 2.4.1).
+2. tabindex="-1" en main: garantiza que el foco del navegador se posicione físicamente en el contenedor principal tras activar el enlace de salto, evitando que la siguiente pulsación de Tab vuelva al menú de cabecera.
+3. nav aria-label="Principal": diferencia este menú de otros posibles menús secundarios (como pie o migas de pan).
+4. aria-current="page": anuncia al sintetizador que dicho enlace corresponde a la página actual en la que se encuentra el usuario.
+5. header y footer solo son landmarks banner y contentinfo cuando son hijos directos de body. Los internos a article son locales.
 
 ---
 

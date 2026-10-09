@@ -70,7 +70,7 @@ Esta diapositiva es el concepto que sostiene la unidad entera: HTML declara sign
 
 ## HTML en el stack: estructura, no apariencia
 <div class="fragment">
-<img src="./img/01/html-css-js.jpg" alt="TUI" style="max-width: 100%; max-height: 11em; object-fit: contain; border-radius: 8px;">
+<img src="https://dummyimage.com/800x600/ccc/000.png&text=html-css-js.jpg" alt="TUI" style="max-width: 100%; max-height: 11em; object-fit: contain; border-radius: 8px;">
 </div>
 
 
@@ -174,6 +174,27 @@ Este esqueleto se memoriza y se usa en todos los ejercicios: diez líneas que re
 
 --
 
+## Anatomía de la plantilla: ¿Qué hace cada línea?
+
+<span class="fragment"><code>&lt;!DOCTYPE html&gt;</code>: activa el <strong>modo estándar</strong> del motor (evita Quirks Mode retro)</span>
+
+<span class="fragment"><code>&lt;html lang="es"&gt;</code>: vital para la síntesis de voz de lectores de pantalla (pronunciación correcta)</span>
+
+<span class="fragment"><code>&lt;meta charset="UTF-8"&gt;</code>: tabla Unicode; debe ir en los <strong>primeros 1024 bytes</strong> del fichero</span>
+
+<span class="fragment"><code>&lt;meta name="viewport" ...&gt;</code>: escala 1:1 en móviles; sin él, simula 980 px de escritorio diminuto</span>
+
+<span class="fragment"><code>&lt;title&gt;</code>: pestaña del navegador, marcador y primer resultado en buscadores (SEO)</span>
+
+Note:
+Explicación detallada para los alumnos:
+1. DOCTYPE no es una etiqueta, es una instrucción histórica para que el navegador no active bugs intencionados de los años 90.
+2. lang="es": si un lector de pantalla lee español con fonética inglesa, el contenido resulta ininteligible. Además es obligatorio por WCAG.
+3. charset="UTF-8": evita que las tildes, la eñe y el símbolo del euro aparezcan como caracteres rotos (mojibake).
+4. viewport: width=device-width iguala el ancho CSS al ancho físico de la pantalla, y initial-scale=1.0 evita que la web nazca con zoom alejado.
+
+--
+
 ## Metadatos y enlaces avanzados en &lt;head&gt;
 
 ```html
@@ -184,7 +205,7 @@ Este esqueleto se memoriza y se usa en todos los ejercicios: diez líneas que re
 <!-- PWA y visualización en dispositivos -->
 <meta name="theme-color" content="#1e40af">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="https://dummyimage.com/800x600/ccc/000.png&text=icon-192.png">
 
 <!-- Sindicación de contenidos (RSS / Atom) -->
 <link rel="alternate" type="application/rss+xml" title="Feed RSS" href="/rss.xml">
@@ -217,7 +238,7 @@ La <strong>etiqueta</strong> es el texto entre ángulos; el <strong>elemento</st
 </div>
 
 ```html
-<img src="foto.jpg" alt="Equipo celebrando la copa">  <!-- recurso: imagen -->
+<img src="https://dummyimage.com/800x600/ccc/000.png&text=foto.jpg" alt="Equipo celebrando la copa">  <!-- recurso: imagen -->
 <br>                                                 <!-- salto literal -->
 <hr>                                                 <!-- cambio de tema -->
 <input type="email" name="correo">                   <!-- campo -->
@@ -359,29 +380,59 @@ El validador distingue errores de avisos: los errores hay que corregirlos todos,
 
 ---
 
-## Ejemplo: página mínima bien formada
+## Ejemplo práctico · Página completa bien formada y accesible
 
 ```html
-<!DOCTYPE html> <!-- 1. Declaración HTML5 -->
-<html lang="es"> <!-- 2. Raíz e idioma -->
+<!DOCTYPE html> <!-- 1. Modo estándar HTML5 -->
+<html lang="es"> <!-- 2. Idioma declarado -->
 <head>
-  <meta charset="UTF-8"> <!-- 3. ñ, tildes y € -->
+  <meta charset="UTF-8"> <!-- Codificación universal (ñ, tildes) -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matrícula DAW · 2026-2027</title> <!-- 4. Pestaña -->
+  <title>Matrícula DAW · Curso 2026-2027</title>
+  <link rel="icon" href="https://dummyimage.com/200x200/ccc/000.png&text=favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-  <header><h1>Matrícula · DAW</h1></header> <!-- único h1 -->
-  <main><label for="nombre">Nombre:</label><input id="nombre" name="nombre" required></main>
+  <header>
+    <h1>Matrícula · Desarrollo de Aplicaciones Web</h1>
+    <nav aria-label="Navegación del sitio">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="horario.html">Horario</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h2>Datos del alumno/a</h2>
+    <form action="confirmacion.html" method="post">
+      <label for="nombre">Nombre y apellidos:</label>
+      <input type="text" id="nombre" name="nombre" required autocomplete="name">
+      <label for="correo">Correo electrónico:</label>
+      <input type="email" id="correo" name="correo" required autocomplete="email">
+      <button type="submit">Enviar solicitud</button>
+    </form>
+  </main>
+  <footer>
+    <p>&copy; 2026 IES Ejemplo · Ciclo DAW · Junta de Andalucía</p>
+  </footer>
 </body>
 </html>
 ```
 
-<span class="fragment">Comprueba: DOCTYPE en la primera línea · lang y charset en el head · un solo h1</span>
+<span class="fragment">Estructura semántica completa: <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code> y <code>&lt;footer&gt;</code></span>
 
-<span class="fragment">Valida en <code>validator.w3.org</code> y corrijo hasta que no dé ningún error</span>
+<span class="fragment">Accesibilidad y ergonomía: <code>label for</code> vinculado al <code>id</code> y <code>autocomplete</code></span>
+
+<span class="fragment">Metadatos imprescindibles: <code>lang="es"</code>, <code>charset="UTF-8"</code> y <code>viewport</code></span>
 
 Note:
-Es la página mínima que se considera bien formada y sirve de base para cualquier práctica. Fijaos en el `for` del label: coincide con el `id` del campo, y por eso al pulsar sobre el texto se activa el input. El `required` y el `type` correcto ya os dan validación nativa sin escribir una línea de JavaScript.
+Este ejemplo integra los pilares de un documento HTML5 profesional:
+1. DOCTYPE en la línea 1 para evitar el modo quirks.
+2. lang="es" para que los sintetizadores de voz usen el diccionario fonético español.
+3. El viewport garantiza la correcta escala en dispositivos móviles.
+4. Un único h1 como título nuclear del documento y landmark de navegación nav con aria-label para distinguirlo.
+5. El atributo for del label vinculado al id del input incrementa el área táctil y garantiza la accesibilidad (WCAG 1.3.1).
+6. El footer con la entidad &copy; cierra formalmente la página. Valida siempre con validator.w3.org.
 
 ---
 

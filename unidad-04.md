@@ -63,18 +63,38 @@ Los plugins eran cajas negras: nada legible para buscadores ni para lectores de 
 Note:
 `controls` es el atributo imprescindible: sin él el vídeo no se puede reproducir salvo que lo manejes con JavaScript. Es lo primero que se revisa en examen y el error más frecuente en las prácticas. `preload` decide cuántos datos gastas antes de que alguien pulse play.
 
+--
+
+## Atributos de &lt;video&gt; bajo la lupa
+
+<span class="fragment"><code>preload="none"</code>: <strong>cero bytes descargados</strong> hasta pulsar play (vital si hay 10 vídeos en la página)</span>
+
+<span class="fragment"><code>preload="metadata"</code>: solo descarga duración y dimensiones (equilibrio ideal)</span>
+
+<span class="fragment"><code>preload="auto"</code>: descarga todo el fichero en segundo plano (derroche de datos si nadie lo ve)</span>
+
+<span class="fragment"><code>playsinline</code>: <strong>obligatorio en iPhone/iOS</strong> para reproducir dentro del diseño sin forzar pantalla completa nativa</span>
+
+<span class="fragment"><code>autoplay muted</code>: los navegadores bloquean el vídeo automático si tiene sonido (política anti-molestias)</span>
+
+Note:
+Explicación para el aula:
+1. Si pones preload="auto" en un catálogo con 20 vídeos, el móvil del usuario se comerá 1 GB de tarifa de datos antes de hacer scroll.
+2. En Safari móvil (iOS), un vídeo sin playsinline salta a pantalla completa del sistema operativo interrumpiendo la interfaz web.
+3. El audio automático está vetado por todos los navegadores modernos para evitar sustos al usuario; autoplay solo funciona legalmente si va acompañado de muted.
+
 ---
 
 ## Varios formatos con source
 
 ```html
-<video controls poster="img/noticia-portada.jpg" width="640" height="360">
+<video controls poster="https://dummyimage.com/800x600/ccc/000.png&text=noticia-portada.jpg" width="640" height="360">
   <!-- Recorre los <source> de arriba abajo: gana el primero compatible -->
-  <source src="video/noticia.mp4" type="video/mp4">
-  <source src="video/noticia.webm" type="video/webm">
+  <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+  <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm">
   <!-- Respaldo: se ve solo si el navegador no reconoce <video> -->
   <p>Tu navegador no reproduce vídeo HTML5.
-     <a href="video/noticia.mp4">Descarga el clip</a>.</p>
+     <a href="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4">Descarga el clip</a>.</p>
 </video>
 ```
 
@@ -98,7 +118,7 @@ El orden importa: el navegador se queda con el primer `type` que entiende, por e
 ```html
 <!-- Autoplay SOLO aceptado con el sonido silenciado -->
 <video autoplay muted loop playsinline
-       src="video/banner-tienda.webm"
+       src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"
        width="960" height="400" aria-hidden="true"></video>
 ```
 
@@ -137,12 +157,12 @@ La compatibilidad cambia con cada versión de navegador, por eso se recomienda c
 ```html
 <!-- Podcast: formatos múltiples y descarga de respaldo -->
 <audio controls preload="none">
-  <source src="audio/podcast-clase.mp3" type="audio/mpeg">
-  <source src="audio/podcast-clase.ogg" type="audio/ogg">
-  <p>Sin audio: <a href="audio/podcast-clase.mp3">Descarga</a>.</p>
+  <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3" type="audio/mpeg">
+  <source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg">
+  <p>Sin audio: <a href="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3">Descarga</a>.</p>
 </audio>
 <!-- Atajo con src directo, un solo formato -->
-<audio controls src="audio/podcast-clase.mp3"></audio>
+<audio controls src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3"></audio>
 ```
 
 <span class="fragment">Admite los mismos atributos que `<video>` salvo `poster`</span>
@@ -161,14 +181,14 @@ Note:
 ## Subtítulos con track
 
 ```html
-<video controls poster="img/noticia-portada.jpg" width="640" height="360">
-  <source src="video/noticia.mp4" type="video/mp4">
-  <source src="video/noticia.webm" type="video/webm">
+<video controls poster="https://dummyimage.com/800x600/ccc/000.png&text=noticia-portada.jpg" width="640" height="360">
+  <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+  <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm">
   <!-- Subtítulos en español activados al empezar -->
-  <track kind="subtitles" src="video/noticia-es.vtt"
+  <track kind="subtitles" src="https://interactive-examples.mdn.mozilla.net/media/examples/friday.vtt"
          srclang="es" label="Español" default>
   <!-- Descripción hablada de la acción en pantalla -->
-  <track kind="descriptions" src="video/noticia-desc.vtt"
+  <track kind="descriptions" src="https://interactive-examples.mdn.mozilla.net/media/examples/friday.vtt"
          srclang="es" label="Descripción">
 </video>
 ```
@@ -268,27 +288,47 @@ El marco de YouTube trae cookies, scripts y vídeos recomendados de la competenc
 
 ---
 
-## Ejemplo: noticia con vídeo y podcast
+## Ejemplo práctico · Noticia con vídeo, podcast y accesibilidad
 
 ```html
 <article>
-  <video controls preload="metadata" poster="img/becas-portada.jpg">
-    <source src="video/becas.mp4" type="video/mp4">
-    <source src="video/becas.webm" type="video/webm">
-    <track kind="subtitles" src="becas-es.vtt" srclang="es" label="Español" default>
+  <!-- 1. Vídeo optimizado con dimensiones nativas y subtítulos -->
+  <video controls preload="metadata" width="800" height="450"
+         poster="https://dummyimage.com/800x600/ccc/000.png&text=becas-portada.jpg">
+    <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+    <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm">
+    <track kind="subtitles" src="https://interactive-examples.mdn.mozilla.net/media/examples/friday.vtt"
+           srclang="es" label="Español" default>
+    Tu navegador no soporta el elemento de vídeo HTML5.
   </video>
-  <audio controls preload="none" src="audio/becas-ep07.mp3"></audio>
+
+  <!-- 2. Transcripción textual accesible (Criterio WCAG 1.2.1) -->
+  <details>
+    <summary>Transcripción completa del vídeo</summary>
+    <p>La Consejería abre la convocatoria general de ayudas para alumnado de FP técnica...</p>
+  </details>
+
+  <!-- 3. Audio / Podcast con carga diferida y ahorro de datos -->
+  <audio controls preload="none">
+    <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3" type="audio/mpeg">
+    Tu navegador no soporta reproducción de audio nativo.
+  </audio>
 </article>
 ```
 
-<span class="fragment">`preload="metadata"` en el vídeo y `preload="none"` en el audio</span>
+<span class="fragment">Dimensiones <code>width</code> y <code>height</code> explícitas para reservar espacio (CLS = 0)</span>
 
-<span class="fragment">La transcripción completa se publica en un `<details>` de la página</span>
+<span class="fragment">Estrategia de carga: <code>preload="metadata"</code> en vídeo y <code>preload="none"</code> en audio</span>
 
-<span class="fragment">Cada `<source>` y cada `<track>` vive en el mismo origen</span>
+<span class="fragment">Accesibilidad WCAG 1.2.1 y 1.2.2: subtítulos VTT (<code>&lt;track&gt;</code>) y <code>&lt;details&gt;</code> para transcripción</span>
 
 Note:
-El ejemplo junta todo lo visto: dos formatos, pista de subtítulos con `default` y audios con carga diferida. El `<details>` cumple la WCAG 1.2.1 y da texto indexable sin reproducir nada. Fijaos en que cada `<source>` lleva su `type`, que es lo que suele faltar.
+Puntos clave para el profesor:
+1. width="800" y height="450": reservan el aspect ratio antes de que el vídeo cargue, eliminando el parpadeo de diseño (Cumulative Layout Shift = 0).
+2. preload="metadata" solo descarga duración y dimensiones, no el archivo de vídeo completo; preload="none" en audio ahorra datos hasta que el usuario pulsa play.
+3. El elemento <track kind="subtitles"> con srclang="es" y default es obligatorio para personas sordas o entornos ruidosos.
+4. El contenedor <details> con <summary> proporciona una alternativa textual indexable por motores de búsqueda y accesible para lectores braille.
+5. Cada <source> declara explícitamente su type para que el navegador decida sin realizar peticiones HTTP superfluas.
 
 ---
 

@@ -212,6 +212,26 @@ Pattern valida el formato completo del campo, no fragmentos sueltos, porque el n
 Note:
 La distinción clave entre progress y meter es temporal: uno mide avance hacia una meta y otro mide un valor con umbrales que se colorean solos. En select, el required necesita esa opción trampa vacía para que el usuario tenga que elegir algo de verdad. El textarea no tiene value porque el contenido ya está entre sus etiquetas. Los tres elementos de resultado son de examen frecuente.
 
+--
+
+## Controles especiales: select, progress y meter
+
+<span class="fragment"><code>&lt;select&gt;</code> envía el atributo <code>value="..."</code> de la opción (código interno tipo "ES"), no el texto visual ("España")</span>
+
+<span class="fragment"><strong>Patrón select required:</strong> La primera opción debe ser <code>&lt;option value="" disabled selected&gt;Elige país...&lt;/option&gt;</code></span>
+
+<span class="fragment"><code>&lt;progress value="70" max="100"&gt;</code>: tarea que avanza en el tiempo hacia el 100% (subida de archivo, descarga)</span>
+
+<span class="fragment"><code>&lt;meter value="85" min="0" max="100" optimum="90"&gt;</code>: medición estática o depósito (batería, memoria RAM, nota de examen) con zonas verde/amarillo/rojo</span>
+
+<span class="fragment"><code>&lt;button&gt;</code> trampa: por defecto es <code>type="submit"</code>; para disparar JS debe llevar <code>type="button"</code></span>
+
+Note:
+Explicación detallada para los alumnos:
+1. En select, si no pones el value="" vacío en la primera opción, el formulario enviará esa primera opción por defecto aunque el usuario no la haya elegido.
+2. progress representa progreso temporal (va a terminar). meter representa un indicador o manómetro físico (sube y baja, tiene valores óptimos o peligrosos).
+3. button sin type: si un alumno hace un botón para abrir un popup o hacer un cálculo y no pone type="button", la página se recargará porque intenta enviar el formulario al servidor.
+
 ---
 
 ## button y validación nativa
@@ -231,7 +251,7 @@ El type por defecto del button es el fallo número uno del módulo: un botón «
 
 ---
 
-## Ejemplo · Formulario de matrícula
+## Ejemplo práctico · Formulario completo y accesible
 
 ```html
 <form action="/matricula" method="post" enctype="multipart/form-data">
@@ -240,22 +260,39 @@ El type por defecto del button es el fallo número uno del módulo: un botón «
     <label for="nombre">Nombre y apellidos</label>
     <input type="text" id="nombre" name="nombre" autocomplete="name" required>
     <label for="dni">DNI/NIE</label>
-    <input type="text" id="dni" name="dni" pattern="[0-9]{8}[A-Za-z]" required>
-    <label for="email">Correo electrónico</label>
-    <input type="email" id="email" name="email" autocomplete="email" required>
+    <input type="text" id="dni" name="dni" pattern="[0-9]{8}[A-Za-z]"
+           aria-describedby="pista-dni" required>
+    <span id="pista-dni">Ejemplo: 12345678Z</span>
+    <label for="nacimiento">Fecha de nacimiento</label>
+    <input type="date" id="nacimiento" name="nacimiento" required>
   </fieldset>
+  <fieldset>
+    <legend>Turno de matrícula</legend>
+    <input type="radio" id="manana" name="turno" value="manana" required>
+    <label for="manana">Mañana</label>
+    <input type="radio" id="tarde" name="turno" value="tarde">
+    <label for="tarde">Tarde</label>
+  </fieldset>
+  <label for="cv">Currículum (PDF)</label>
+  <input type="file" id="cv" name="cv" accept=".pdf, application/pdf">
+  <input type="checkbox" id="terminos" name="terminos" value="si" required>
+  <label for="terminos">Acepto la normativa del centro</label>
   <button type="submit">Enviar matrícula</button>
 </form>
 ```
 
-<span class="fragment">POST porque hay <mark>datos personales</mark> y un fichero adjunto</span>
+<span class="fragment"><code>enctype="multipart/form-data"</code> imprescindible para transmitir ficheros (<code>&lt;input type="file"&gt;</code>)</span>
 
-<span class="fragment">`autocomplete` cumple <mark>WCAG 1.3.5</mark> y acelera el relleno en móvil</span>
+<span class="fragment"><code>&lt;fieldset&gt;</code> + <code>&lt;legend&gt;</code> contextualizan grupos de campos (datos y radios excluyentes)</span>
 
-<span class="fragment">Cada campo con su <mark>label visible</mark>, su name y su validación nativa</span>
+<span class="fragment">Validación nativa en cliente: <code>pattern</code>, <code>required</code> y <code>aria-describedby</code> para pistas</span>
 
 Note:
-Doce líneas con el patrón completo: post con multipart, grupo con legend, etiqueta visible por campo, validación nativa por tipo y botón con type explícito. El autocomplete no es un lujo: es un criterio de accesibilidad que reduce errores de digitación. Completad el ejemplo añadiendo el turno de matrícula con radios y la casilla de normativa con required.
+Arquitectura completa de formularios accesibles:
+1. method="post" para proteger datos sensibles del payload HTTP, y enctype="multipart/form-data" para permitir subida de archivos binarios (PDF).
+2. legend anuncia el contexto ("Turno de matrícula, Mañana, 1 de 2") evitando desorientación con sintetizadores de voz.
+3. aria-describedby vincula la ayuda contextual ("Ejemplo: 12345678Z") al foco del lector antes de escribir.
+4. Los botones de radio comparten el atributo name para garantizar exclusión mutua, y la casilla checkbox con required bloquea el envío nativo si no se acepta la normativa.
 
 ---
 

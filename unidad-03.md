@@ -143,7 +143,7 @@ El árbol se resuelve siempre igual: origen, dirección y número de niveles. En
 <!-- Descarga con nombre nuevo: solo mismo origen o con CORS -->
 <a href="documentos/garantia.pdf" download="Garantia.pdf">Descargar garantía</a>
 <!-- Sin valor conserva el nombre original del fichero -->
-<a href="img/zapatillas-1200w.jpg" download>Foto en alta resolución</a>
+<a href="https://dummyimage.com/1200x400/ccc/000.png&text=zapatillas-1200w.jpg" download>Foto en alta resolución</a>
 <!-- target="_blank" viaja SIEMPRE con rel -->
 <a href="https://example.org/" target="_blank" rel="noopener noreferrer">Docs</a>
 ```
@@ -206,17 +206,32 @@ Los lectores de pantalla construyen una lista de enlaces: si todos dicen «haz c
 Note:
 La combinación de skip link y foco visible es la puerta de entrada de la navegación por teclado. Un `outline: none` mal colocado deja a parte de los usuarios sin saber dónde están. Es el primer chequeo de accesibilidad de cualquier auditoría.
 
+--
+
+## ¿Cómo funciona el Skip Link? (El atajo fantasma)
+
+<span class="fragment"><strong>El problema:</strong> En webs con menús de 30 enlaces, quien navega con teclado debe pulsar <kbd>Tab</kbd> 30 veces en cada página nueva solo para llegar al texto.</span>
+
+<span class="fragment"><strong>El HTML:</strong> El primer enlace de la página apunta a <code>href="#contenido"</code> saltándose el <code>&lt;header&gt;</code>.</span>
+
+<span class="fragment"><strong>El CSS oculto:</strong> Se manda fuera de la pantalla con <code>position: absolute; left: -9999px;</code> para que no estorbe al ratón.</span>
+
+<span class="fragment"><strong>La magia con :focus:</strong> Al pulsar <kbd>Tab</kbd> por primera vez, <code>.skip-link:focus</code> lo devuelve a la esquina visible (<code>left: 1rem; top: 1rem;</code>) con estilo de botón destacado.</span>
+
+Note:
+Es un "botón fantasma": invisible para la mayoría de usuarios que navegan con ratón, pero aparece mágicamente como un salvavidas cuando una persona pulsa Tab nada más cargar la página. Es el mejor ejemplo pedagógico de diseño inclusivo para los alumnos.
+
 ---
 
 ## Imágenes: alt correcto y rendimiento
 
 ```html
 <!-- Informativa: aporta información que no está en el texto -->
-<img src="img/zapatillas-800w.jpg"
+<img src="https://dummyimage.com/800x600/ccc/000.png&text=zapatillas-800w.jpg"
      alt="Zapatillas Run 300 azules vistas de perfil"
      width="800" height="600">
 <!-- Decorativa: no aporta nada, alt vacío -->
-<img src="img/divisor.png" alt="" width="1200" height="8">
+<img src="https://dummyimage.com/800x600/ccc/000.png&text=divisor.png" alt="" width="1200" height="8">
 ```
 
 <span class="fragment">Informativa → `alt` descriptivo; no empieces por «imagen de»</span>
@@ -235,7 +250,7 @@ El `alt` es una decisión de contenido, no de relleno: si la imagen informa, des
 ## Imagen responsive: srcset y picture
 
 ```html
-<img src="img/zapatillas-800w.jpg"
+<img src="https://dummyimage.com/800x600/ccc/000.png&text=zapatillas-800w.jpg"
      srcset="img/zapatillas-400w.jpg 400w,
              img/zapatillas-800w.jpg 800w,
              img/zapatillas-1200w.jpg 1200w"
@@ -278,35 +293,84 @@ El navegador elige la variante según el ancho real que va a ocupar. Sin `sizes`
 Note:
 El iframe crea un documento completo dentro de otro: cuesta rendimiento y añade una capa de seguridad que hay que acotar. Muchos dominios prohíben ser incrustados, así que prueba el marco antes de maquetar. Si el vídeo o el PDF son tuyos, el elemento nativo siempre es mejor.
 
+--
+
+## ¿Qué es exactamente un &lt;iframe&gt;?
+
+<span class="fragment">Es una <strong>ventana aislada</strong> que renderiza una página web ajena completa dentro de la tuya</span>
+
+<span class="fragment"><strong>Aislamiento de seguridad:</strong> JavaScript del iframe no puede leer cookies ni variables del sitio padre (Same-Origin Policy)</span>
+
+<span class="fragment"><code>title="..."</code> obligatorio por ley: el lector de pantalla anuncia qué ventana incrustada se está enfocando</span>
+
+<span class="fragment"><code>sandbox</code>: convierte el iframe en una "cárcel de máxima seguridad" (desactiva scripts, formularios y ventanas emergentes salvo que añadas permisos <code>allow-*</code>)</span>
+
+Note:
+Explicación para el aula:
+Un iframe es como recortar un agujero en tu página y colocar otra web viva detrás.
+1. Uso típico: vídeos de YouTube/Vimeo, mapas interactivos de Google Maps/OpenStreetMap o pasarelas de pago bancarias.
+2. Peligro de seguridad: si incrustas una web maliciosa sin sandbox, podría ejecutar código fraudulento.
+3. Accesibilidad: sin title, una persona ciega solo oye "Marco en línea" y no sabe si es un mapa, un anuncio o un formulario de pago.
+
 ---
 
-## Ejemplo: galería de producto
+## Ejemplo práctico 1 · Imagen responsive con srcset y sizes
 
 ```html
 <main id="contenido">
   <figure>
-    <img src="img/zapatillas-800w.jpg"
-         srcset="img/zapatillas-400w.jpg 400w,
-                 img/zapatillas-1200w.jpg 1200w"
+    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80"
+         srcset="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80 400w,
+                 https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80 1200w"
          sizes="(max-width: 600px) 100vw, 600px"
-         alt="Zapatillas Run 300 azules vistas de perfil"
+         alt="Zapatillas de running rojas Speed Pro 300 vistas de perfil"
          width="1200" height="800" loading="eager">
     <figcaption>Vista lateral ·
-      <a href="img/zapatillas-1200w.jpg" download>Ampliar</a></figcaption>
+      <a href="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80"
+         download="zapatillas-speedpro-hd.jpg">Descargar en alta resolución</a>
+    </figcaption>
   </figure>
 </main>
 ```
 
-<span class="fragment">El skip link apunta a `<main id="contenido">`, primer destino con Tab</span>
+<span class="fragment"><code>srcset</code> con descriptores <code>400w</code> y <code>1200w</code> según densidad y resolución</span>
 
-<span class="fragment">`figure` + `figcaption` hacen el bloque autónomo y movible</span>
+<span class="fragment"><code>sizes</code> comunica al navegador el ancho de diseño antes de descargar</span>
 
-<span class="fragment">El enlace de descarga usa `download` sobre un fichero del mismo origen</span>
-
-<span class="fragment">La imagen principal va con `loading="eager"` por ser visible al inicio</span>
+<span class="fragment"><code>loading="eager"</code> en imagen sobre el pliegue inicial (LCP prioritario)</span>
 
 Note:
-Este ejemplo junta lo visto: ruta relativa, imagen responsive, enlace de descarga y estructura semántica con destino del skip link. Fijaos en que el `figcaption` incluye un enlace con texto propio, nunca «haz clic aquí». En clase lo ampliamos con una segunda figura en `<picture>`.
+Enseñad en clase cómo el navegador consulta `sizes` y calcula la densidad de pantalla (`devicePixelRatio`) para elegir automáticamente la imagen más ligera de `srcset`. Fijaos en las dimensiones `width="1200"` y `height="800"` para reservar el espacio y evitar saltos (CLS = 0). El atributo `download` sugiere nombre de descarga local para el usuario.
+
+---
+
+## Ejemplo práctico 2 · Dirección de arte y formatos con &lt;picture&gt;
+
+```html
+<figure>
+  <picture>
+    <!-- 1. Formatos de compresión moderna de última generación -->
+    <source type="image/avif" srcset="https://dummyimage.com/600x600/333/fff.avif&text=Suela+AVIF">
+    <source type="image/webp" srcset="https://dummyimage.com/600x600/555/fff.webp&text=Suela+WebP">
+    <!-- 2. Fallback universal obligatorio para compatibilidad -->
+    <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80"
+         alt="Detalle de la amortiguación de la suela de goma con ranuras de tracción"
+         width="600" height="600" loading="lazy">
+  </picture>
+  <figcaption>Detalle de amortiguación en la suela</figcaption>
+</figure>
+```
+
+<span class="fragment">Negociación de formatos: evalúa <code>AVIF</code> &rarr; <code>WebP</code> &rarr; <code>JPG/PNG</code></span>
+
+<span class="fragment">La etiqueta <code>&lt;img&gt;</code> es el fallback indispensable: renderiza y recibe el <code>alt</code></span>
+
+<span class="fragment"><code>loading="lazy"</code> difiere la descarga de recursos bajo el pliegue hasta el scroll</span>
+
+Note:
+El elemento `<picture>` sirve para dos objetivos clave: negociación de formatos y dirección de arte (cambiar el encuadre según media queries).
+1. El orden de los `<source>` es crítico: el navegador se queda con el primer formato que entienda. AVIF ahorra hasta un 50% frente a JPEG; WebP ahorra un 30%.
+2. El elemento `<img>` final es obligatorio: sin él, no se dibuja nada en pantalla. Es en el `<img>` donde recaen los atributos `alt`, `width`, `height` y `loading="lazy"`.
 
 ---
 
